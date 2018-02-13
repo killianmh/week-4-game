@@ -4,6 +4,8 @@ var you;
 
 var defender;
 
+var attckCount = 0;
+
 // Character Array
 
 var chars = [
@@ -130,6 +132,23 @@ var game = {
 		$("#htmlEnemies").empty();
 		game.displayImages(game.enemies,"#htmlEnemies","enemy");
 
+	},
+
+	attck: function(attckCount){
+		var defenderHp = $(game.defender[0]).attr("hP");
+		console.log(defenderHp);
+		var AttckPwr = $(game.youChar[0]).attr("attkPwr") * attckCount;
+		console.log(AttckPwr);
+		$(game.defender[0]).attr("hP",(defenderHp - AttckPwr));
+		console.log($(game.defender[0]).attr("hP"));
+
+		var youHp = $(game.youChar[0]).attr("hP");
+		console.log(youHp);
+		var cntrAttckPwr = $(game.defender[0]).attr("cntrAttckPwr");
+		console.log(cntrAttckPwr);
+		$(game.youChar[0]).attr("hP", (youHp - cntrAttckPwr));
+		console.log($(game.youChar[0]).attr("hP"));
+
 	}
 
 
@@ -159,6 +178,17 @@ $(document).ready(function(){
 			console.log($(this).attr("name"));
 			game.chooseDefender($(this).attr("name"));
 		};
+	});
+
+	$("#htmlAttckButton").on("click",function(){
+		if(game.defender.length === 1){
+			// console.log("poop");
+			attckCount ++;
+			console.log(attckCount);
+			game.attck(attckCount);
+		};
+
+
 	});
 
 
