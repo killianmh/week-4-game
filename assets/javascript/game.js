@@ -2,6 +2,8 @@
 
 var you;
 
+var defender;
+
 // Character Array
 
 var chars = [
@@ -59,7 +61,7 @@ var game = {
 	//Create a method to be called upon page load which creates 
 	//<img> tags, fills them with the char objects, and appends 
 	//them to the top of the screen
-	displayImages: function(array,location){
+	displayImages: function(array,location,newClass){
 		var length = array.length;
 
 		if(length === 0){
@@ -69,7 +71,7 @@ var game = {
 		//Create an <img> tag for each char object and fill it
 		for (var i = 0; i <length; i++) {
 			var eachChar = $("<img>");
-			eachChar.addClass("char");
+			eachChar.addClass(newClass);
 			eachChar.attr("name",array[i].name);
 			eachChar.attr("src","assets/images/"+array[i].name+".jpg");
 			$(location).append(eachChar);
@@ -88,7 +90,7 @@ var game = {
 
 		game.youChar.push(chars[index]);
 		chars.splice(index,1);
-		game.displayImages(game.youChar,".displayYouChar")
+		game.displayImages(game.youChar,"#htmlYouChar","youChar")
 		
 		you = $(game.youChar[0]).attr("name");
 
@@ -98,15 +100,35 @@ var game = {
 		
 		chars.length = 0;
 		console.log(game.enemies);
-		game.displayImages(game.enemies,".displayEnemies");
+		game.displayImages(game.enemies,"#htmlEnemies","enemy");
 		
 
-		game.displayImages(chars,".displayChars");
+		game.displayImages(chars,"#htmlChars","char");
 		
 		
 		
 		console.log(game.youChar);
 		console.log(chars);
+
+	},
+
+	chooseDefender: function(nameinput){
+		console.log(nameinput);
+		var index;
+		for(var i = 0; i < game.enemies.length; i++){
+			if (game.enemies[i].name === nameinput) {
+				index = i;
+			};
+		};
+		game.defender.push(game.enemies[index]);
+		console.log(game.defender);
+		game.enemies.splice(index,1);
+		game.displayImages(game.defender,"#htmlDefender","defender");
+
+		defender = $(game.defender[0]).attr("name");
+
+		$("#htmlEnemies").empty();
+		game.displayImages(game.enemies,"#htmlEnemies","enemy");
 
 	}
 
@@ -122,20 +144,24 @@ var game = {
 //Event Listeners
 
 $(document).ready(function(){
-	game.displayImages(chars,".displayChars");
+	game.displayImages(chars,"#htmlChars","char");
 
 	$(".char").on("click", function(){
 		if (game.youChar.length === 0) {
 			console.log($(this).attr("name"));
 			game.charChoice($(this).attr("name"));
-
-
 		};
-
-		
-
-
 	});
+
+	$(".displayEnemies").on("click", ".enemy", function(){
+		// console.log("poop");
+		if(game.defender.length === 0){
+			console.log($(this).attr("name"));
+			game.chooseDefender($(this).attr("name"));
+		};
+	});
+
+
 
 });
 
