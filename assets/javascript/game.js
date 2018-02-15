@@ -83,6 +83,9 @@ var game = {
 	},
 
 	charChoice: function(nameinput){
+
+		$(".char").off("click");
+
 		console.log(nameinput);
 		var index;
 		for (var i = 0; i < chars.length; i++) {
@@ -107,14 +110,22 @@ var game = {
 
 		game.displayImages(chars,"#htmlChars","char");
 		
-		
-		
 		console.log(game.youChar);
 		console.log(chars);
+
+		game.displayEnemiesClick();
+
+
+		// $("*").off("click");
+
+
 
 	},
 
 	chooseDefender: function(nameinput){
+
+		$(".displayEnemies").off("click");
+
 		console.log(nameinput);
 		var index;
 		for(var i = 0; i < game.enemies.length; i++){
@@ -132,9 +143,14 @@ var game = {
 		$("#htmlEnemies").empty();
 		game.displayImages(game.enemies,"#htmlEnemies","enemy");
 
+		game.htmlAttckButton();
+
 	},
 
 	attck: function(attckCount){
+
+
+
 		var defenderHp = $(game.defender[0]).attr("hP");
 		console.log(defenderHp);
 		var AttckPwr = $(game.youChar[0]).attr("attkPwr") * attckCount;
@@ -149,6 +165,127 @@ var game = {
 		$(game.youChar[0]).attr("hP", (youHp - cntrAttckPwr));
 		console.log($(game.youChar[0]).attr("hP"));
 
+		$("#htmlAttckMsg").text("You attacked " + $(game.defender[0]).attr("name") + " and caused " + AttckPwr + " damage!");
+
+		$("#htmlDefendMsg").text($(game.defender[0]).attr("name") + " counter attacked and caused " + cntrAttckPwr + " damage!");
+
+		if ($(game.youChar[0]).attr("hP") <= 0) {
+			game.lose();
+			$("#htmlAttckButton").off("click");
+		}
+
+		// if ($(game.defender[0]).attr("hP") <= 0) {
+		// 	game.win();
+		// }
+	},
+
+	lose: function(){
+		console.log("poop");
+		// game.youChar.length = 0;
+		// game.defender.length = 0;
+		// game.enemies.length = 0;
+
+		var resetButton = $("<button>");
+		resetButton.addClass("resetButton");
+
+		$("#htmlResetButton").append(resetButton);
+
+		game.htmlResetButton();
+
+		
+	},
+
+	charClick: function(){
+		$(".char").on("click", function(){
+		console.log("poop");
+		// if (game.youChar.length === 0) {
+			console.log($(this).attr("name"));
+			game.charChoice($(this).attr("name"));
+		// };
+		});
+	},
+
+	displayEnemiesClick: function(){
+		$(".displayEnemies").on("click", ".enemy", function(){
+		// console.log("poop");
+		// if(game.defender.length === 0){
+			console.log($(this).attr("name"));
+			game.chooseDefender($(this).attr("name"));
+		// };
+		});
+	},
+
+	htmlAttckButton: function(){
+		$("#htmlAttckButton").on("click",function(){
+		// if(game.defender.length === 1){
+			// console.log("poop");
+			attckCount ++;
+			console.log(attckCount);
+			game.attck(attckCount);
+		// };
+
+
+		});
+	},
+
+	htmlResetButton: function(){
+		$(".resetButton").on("click",function(){
+			// console.log("hahaha");
+
+			game.youChar.length = 0;
+			game.defender.length = 0;
+			game.enemies.length = 0;
+
+			game.displayImages(game.youChar,"#htmlYouChar");
+			game.displayImages(game.defender,"#htmlDefender");
+			game.displayImages(game.enemies,"#htmlEnemies");
+
+			chars = [
+
+			{	
+				name: "swordfish",
+				hP: 0,
+				attkPwr: 0,
+				cntrAttckPwr: 0
+			},
+
+			{	
+				name: "killerwhale",
+				hP: 10,
+				attkPwr: 15,
+				cntrAttckPwr: 18
+			},
+
+			{	
+				name: "octopus",
+				hP: 20,
+				attkPwr: 25,
+				cntrAttckPwr: 28
+			},
+
+			{	
+				name: "shark",
+				hP: 30,
+				attkPwr: 35,
+				cntrAttckPwr: 38
+			}
+			];
+
+			game.displayImages(chars,"#htmlChars","char");
+
+			$(".resetButton").off("click");
+
+			$("#htmlResetButton").empty();
+
+			// game.displayImages()
+
+
+			game.charClick();
+		});
+
+
+
+		
 	}
 
 
@@ -165,31 +302,38 @@ var game = {
 $(document).ready(function(){
 	game.displayImages(chars,"#htmlChars","char");
 
-	$(".char").on("click", function(){
-		if (game.youChar.length === 0) {
-			console.log($(this).attr("name"));
-			game.charChoice($(this).attr("name"));
-		};
-	});
+	game.charClick();
 
-	$(".displayEnemies").on("click", ".enemy", function(){
-		// console.log("poop");
-		if(game.defender.length === 0){
-			console.log($(this).attr("name"));
-			game.chooseDefender($(this).attr("name"));
-		};
-	});
+	// game.displayEnemiesClick();
 
-	$("#htmlAttckButton").on("click",function(){
-		if(game.defender.length === 1){
-			// console.log("poop");
-			attckCount ++;
-			console.log(attckCount);
-			game.attck(attckCount);
-		};
+	// game.htmlAttckButton();
+
+	// $(".char").on("click", function(){
+	// 	console.log("poop");
+	// 	// if (game.youChar.length === 0) {
+	// 		console.log($(this).attr("name"));
+	// 		game.charChoice($(this).attr("name"));
+	// 	// };
+	// });
+
+	// $(".displayEnemies").on("click", ".enemy", function(){
+	// 	// console.log("poop");
+	// 	// if(game.defender.length === 0){
+	// 		console.log($(this).attr("name"));
+	// 		game.chooseDefender($(this).attr("name"));
+	// 	// };
+	// });
+
+	// $("#htmlAttckButton").on("click",function(){
+	// 	if(game.defender.length === 1){
+	// 		// console.log("poop");
+	// 		attckCount ++;
+	// 		console.log(attckCount);
+	// 		game.attck(attckCount);
+	// 	};
 
 
-	});
+	// });
 
 
 
