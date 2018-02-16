@@ -14,28 +14,28 @@ var chars = [
 		name: "swordfish",
 		hP: 0,
 		attkPwr: 0,
-		cntrAttckPwr: 0
+		cntrAttckPwr: 1
 	},
 
 	{	
 		name: "killerwhale",
 		hP: 10,
 		attkPwr: 15,
-		cntrAttckPwr: 18
+		cntrAttckPwr: 2
 	},
 
 	{	
 		name: "octopus",
 		hP: 20,
 		attkPwr: 25,
-		cntrAttckPwr: 28
+		cntrAttckPwr: 3
 	},
 
 	{	
 		name: "shark",
 		hP: 30,
 		attkPwr: 35,
-		cntrAttckPwr: 38
+		cntrAttckPwr: 4
 	}
 ];
 
@@ -72,15 +72,39 @@ var game = {
 
 		//Create an <img> tag for each char object and fill it
 		for (var i = 0; i <length; i++) {
-			var eachChar = $("<img>");
+			var eachChar = $("<div>");
 			eachChar.addClass(newClass);
+
+			var charImage = $("<img>");
+			charImage.addClass("charImg");
+
+			$(eachChar).append(charImage);
+
+			var stats = $("<div>");
+			stats.addClass("stats");
+			$(eachChar).append(stats);
+
+			$(stats).html(array[i].hP);
+
 			eachChar.attr("name",array[i].name);
-			eachChar.attr("src","assets/images/"+array[i].name+".jpg");
+			charImage.attr("src","assets/images/"+array[i].name+".jpg");
+
 			$(location).append(eachChar);
 
 		};
 
+
 	},
+
+	updateStats: function(array,parentClass,hP){
+		var length = array.length;
+
+		for(i = 0; i<length; i++){
+			$(parentClass).html(hP);
+
+		}
+	},
+
 
 	charChoice: function(nameinput){
 
@@ -124,6 +148,11 @@ var game = {
 
 	chooseDefender: function(nameinput){
 
+		$("#htmlResetMsg").empty();
+		$("#htmlAttckMsg").empty();
+		$("#htmlDefendMsg").empty();
+
+
 		$(".displayEnemies").off("click");
 
 		console.log(nameinput);
@@ -158,12 +187,17 @@ var game = {
 		$(game.defender[0]).attr("hP",(defenderHp - AttckPwr));
 		console.log($(game.defender[0]).attr("hP"));
 
+		game.updateStats(game.defender,".defender>.stats",game.defender[0].hP);
+
 		var youHp = $(game.youChar[0]).attr("hP");
 		console.log(youHp);
 		var cntrAttckPwr = $(game.defender[0]).attr("cntrAttckPwr");
 		console.log(cntrAttckPwr);
 		$(game.youChar[0]).attr("hP", (youHp - cntrAttckPwr));
 		console.log($(game.youChar[0]).attr("hP"));
+
+		game.updateStats(game.youChar,".youChar>.stats",game.youChar[0].hP);
+
 
 		$("#htmlAttckMsg").text("You attacked " + $(game.defender[0]).attr("name") + " and caused " + AttckPwr + " damage!");
 
@@ -174,9 +208,10 @@ var game = {
 			$("#htmlAttckButton").off("click");
 		}
 
-		// if ($(game.defender[0]).attr("hP") <= 0) {
-		// 	game.win();
-		// }
+		else if ($(game.defender[0]).attr("hP") <= 0) {
+			game.win();
+			$("#htmlAttckButton").off("click");
+		}
 	},
 
 	lose: function(){
@@ -190,9 +225,43 @@ var game = {
 
 		$("#htmlResetButton").append(resetButton);
 
+		$("#htmlResetMsg").text("You lost to " + $(game.defender[0]).attr("name") + "! Hit the reset button to try again");
+
+		// $("#htmlDefendMsg").text("Hit the reset button to try again");
+
 		game.htmlResetButton();
 
 		
+	},
+
+	win: function(){
+
+		if (game.enemies.length == 0) {
+
+			game.defender.length = 0;
+
+			game.displayImages(game.defender,"#htmlDefender");
+			var resetButton = $("<button>");
+			resetButton.addClass("resetButton");
+
+			$("#htmlResetButton").append(resetButton);
+
+			$("#htmlResetMsg").text("You won! Congratulations! Hit the reset button to play again");
+
+			game.htmlResetButton();
+
+		}
+
+		else {
+			$("#htmlResetMsg").text("You beat " + $(game.defender[0]).attr("name") + "! Pick a new defender");
+
+			game.defender.length = 0;
+
+			game.displayImages(game.defender,"#htmlDefender");
+
+			game.displayEnemiesClick();
+		};
+
 	},
 
 	charClick: function(){
@@ -242,42 +311,47 @@ var game = {
 
 			chars = [
 
-			{	
-				name: "swordfish",
-				hP: 0,
-				attkPwr: 0,
-				cntrAttckPwr: 0
-			},
+	{	
+		name: "swordfish",
+		hP: 0,
+		attkPwr: 0,
+		cntrAttckPwr: 1
+	},
 
-			{	
-				name: "killerwhale",
-				hP: 10,
-				attkPwr: 15,
-				cntrAttckPwr: 18
-			},
+	{	
+		name: "killerwhale",
+		hP: 10,
+		attkPwr: 15,
+		cntrAttckPwr: 2
+	},
 
-			{	
-				name: "octopus",
-				hP: 20,
-				attkPwr: 25,
-				cntrAttckPwr: 28
-			},
+	{	
+		name: "octopus",
+		hP: 20,
+		attkPwr: 25,
+		cntrAttckPwr: 3
+	},
 
-			{	
-				name: "shark",
-				hP: 30,
-				attkPwr: 35,
-				cntrAttckPwr: 38
-			}
-			];
+	{	
+		name: "shark",
+		hP: 30,
+		attkPwr: 35,
+		cntrAttckPwr: 4
+	}
+];
 
 			game.displayImages(chars,"#htmlChars","char");
 
 			$(".resetButton").off("click");
 
+			$("#htmlResetMsg").empty();
 			$("#htmlResetButton").empty();
 
-			// game.displayImages()
+			$("#htmlAttckMsg").empty();
+
+			$("#htmlDefendMsg").empty();
+
+			attckCount = 0;
 
 
 			game.charClick();
@@ -297,43 +371,13 @@ var game = {
 
 
 
-//Event Listeners
+//Initial code upon loading:
 
 $(document).ready(function(){
 	game.displayImages(chars,"#htmlChars","char");
 
 	game.charClick();
 
-	// game.displayEnemiesClick();
-
-	// game.htmlAttckButton();
-
-	// $(".char").on("click", function(){
-	// 	console.log("poop");
-	// 	// if (game.youChar.length === 0) {
-	// 		console.log($(this).attr("name"));
-	// 		game.charChoice($(this).attr("name"));
-	// 	// };
-	// });
-
-	// $(".displayEnemies").on("click", ".enemy", function(){
-	// 	// console.log("poop");
-	// 	// if(game.defender.length === 0){
-	// 		console.log($(this).attr("name"));
-	// 		game.chooseDefender($(this).attr("name"));
-	// 	// };
-	// });
-
-	// $("#htmlAttckButton").on("click",function(){
-	// 	if(game.defender.length === 1){
-	// 		// console.log("poop");
-	// 		attckCount ++;
-	// 		console.log(attckCount);
-	// 		game.attck(attckCount);
-	// 	};
-
-
-	// });
 
 
 

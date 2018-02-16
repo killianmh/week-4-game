@@ -1,19 +1,49 @@
+.displayChars{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.displayYouChar{
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.displayEnemies{
+	content: "";
+	display: table;
+	clear: both;
+}
+
 .char{
+	border: solid 1px black;
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+
+.charImg{
 	width: 100px;
 	height: auto;
 }
 
 .youChar{
+	border: solid 1px black;
 	width: 100px;
-	height: auto;
+	height: 100px;
+	float: left;
 }
 
 .enemy{
+	border: solid 1px black;
 	width: 100px;
-	height: auto;	
+	height: 100px;
+	float: left;
 }
 
 .defender{
+	border: solid 1px black;
 	width: 100px;
-	height: auto;		
+	height: 100px;		
 }
