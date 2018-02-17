@@ -153,7 +153,7 @@ var game = {
 		game.displayEnemiesClick();
 
 
-		// $("*").off("click");
+		
 
 
 
@@ -187,6 +187,8 @@ var game = {
 
 		defenderChoiceAudio.currentTime = 0;
 		defenderChoiceAudio.play();
+
+		$("body").css("background-color", "#ffe900");
 
 		game.htmlAttckButton();
 
@@ -231,21 +233,21 @@ var game = {
 	},
 
 	lose: function(){
-		console.log("poop");
-		// game.youChar.length = 0;
-		// game.defender.length = 0;
-		// game.enemies.length = 0;
+
+		$("body").css("background-color", "#ffa632");
+		
 
 		defenderChoiceAudio.pause();
 
 		var resetButton = $("<button>");
 		resetButton.addClass("resetButton");
+		resetButton.text("Reset");
 
 		$("#htmlResetButton").append(resetButton);
 
 		$("#htmlResetMsg").text("You lost to " + $(game.defender[0]).attr("name") + "! Hit the reset button to try again");
 
-		// $("#htmlDefendMsg").text("Hit the reset button to try again");
+		
 
 		game.htmlResetButton();
 
@@ -253,6 +255,8 @@ var game = {
 	},
 
 	win: function(){
+
+		$("body").css("background-color", "#ffa632");
 
 		if (game.enemies.length == 0) {
 
@@ -263,6 +267,7 @@ var game = {
 			game.displayImages(game.defender,"#htmlDefender");
 			var resetButton = $("<button>");
 			resetButton.addClass("resetButton");
+			resetButton.text("Reset");
 
 			$("#htmlResetButton").append(resetButton);
 
@@ -291,6 +296,8 @@ var game = {
 
 	charClick: function(){
 
+		$("<body>").attr("background-image", "");
+
 		charChoiceAudio.currentTime = 0;
 		charChoiceAudio.play();
 
@@ -300,33 +307,29 @@ var game = {
 
 		$(".char").on("click", function(){
 			charChoiceAudio.pause();
-			console.log("poop");
-		// if (game.youChar.length === 0) {
+			
+		
 			console.log($(this).attr("name"));
 			game.charChoice($(this).attr("name"));
-		// };
 		});
 	},
 
 	displayEnemiesClick: function(){
 		$(".displayEnemies").on("click", ".enemy", function(){
-		// console.log("poop");
-		// if(game.defender.length === 0){
+		
 			enemyChoiceAudio.pause();
 			console.log($(this).attr("name"));
 			game.chooseDefender($(this).attr("name"));
-		// };
 		});
 	},
 
 	htmlAttckButton: function(){
 		$("#htmlAttckButton").on("click",function(){
-		// if(game.defender.length === 1){
-			// console.log("poop");
+		
 			attckCount ++;
 			console.log(attckCount);
 			game.attck(attckCount);
-		// };
+		
 
 
 		});
@@ -336,7 +339,7 @@ var game = {
 		$(".resetButton").on("click",function(){
 
 			defenderChoiceAudio.pause();
-			// console.log("hahaha");
+		
 
 			game.youChar.length = 0;
 			game.defender.length = 0;
