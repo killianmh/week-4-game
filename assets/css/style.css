@@ -2,12 +2,14 @@
 	content: "";
 	display: table;
 	clear: both;
+	margin: 0 auto;
 }
 
 .displayYouChar{
 	content: "";
 	display: table;
 	clear: both;
+	/*margin: 0 auto;*/
 }
 
 .displayEnemies{
@@ -17,33 +19,36 @@
 }
 
 .char{
-	border: solid 1px black;
-	width: 100px;
-	height: 100px;
+	border: solid 5px black;
+	width: auto;
+	height: auto;
 	float: left;
+	margin: 10px;
 }
 
 .charImg{
-	width: 100px;
+	padding: 2px;
+	width: 200px;
 	height: auto;
 }
 
 .youChar{
-	border: solid 1px black;
-	width: 100px;
-	height: 100px;
+	border: solid 5px black;
+	width: auto;
+	height: auto;
 	float: left;
 }
 
 .enemy{
-	border: solid 1px black;
-	width: 100px;
-	height: 100px;
+	border: solid 4px black;
+	width: auto;
+	height: auto;
 	float: left;
 }
 
 .defender{
-	border: solid 1px black;
-	width: 100px;
-	height: 100px;		
+	border: solid 4px black;
+	width: auto;
+	height: auto;
+	float: left;	
 }

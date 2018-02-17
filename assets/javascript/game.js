@@ -6,33 +6,39 @@ var defender;
 
 var attckCount = 0;
 
+var charChoiceAudio = new Audio("assets/images/charChoice.mp3");
+
+var enemyChoiceAudio = new Audio("assets/images/enemyChoice.mp3");
+
+var defenderChoiceAudio = new Audio("assets/images/defenderChoice.mp3");
+
 // Character Array
 
 var chars = [
 
 	{	
-		name: "swordfish",
+		name: "Ibuki",
 		hP: 0,
 		attkPwr: 0,
 		cntrAttckPwr: 1
 	},
 
 	{	
-		name: "killerwhale",
+		name: "Sagat",
 		hP: 10,
 		attkPwr: 15,
 		cntrAttckPwr: 2
 	},
 
 	{	
-		name: "octopus",
+		name: "Ryu",
 		hP: 20,
 		attkPwr: 25,
 		cntrAttckPwr: 3
 	},
 
 	{	
-		name: "shark",
+		name: "Chun-Li",
 		hP: 30,
 		attkPwr: 35,
 		cntrAttckPwr: 4
@@ -137,6 +143,13 @@ var game = {
 		console.log(game.youChar);
 		console.log(chars);
 
+		enemyChoiceAudio.currentTime =0;
+		enemyChoiceAudio.play();
+
+		enemyChoiceAudio.addEventListener("ended", function(){
+			this.play();
+		}, false);
+
 		game.displayEnemiesClick();
 
 
@@ -171,6 +184,9 @@ var game = {
 
 		$("#htmlEnemies").empty();
 		game.displayImages(game.enemies,"#htmlEnemies","enemy");
+
+		defenderChoiceAudio.currentTime = 0;
+		defenderChoiceAudio.play();
 
 		game.htmlAttckButton();
 
@@ -220,6 +236,8 @@ var game = {
 		// game.defender.length = 0;
 		// game.enemies.length = 0;
 
+		defenderChoiceAudio.pause();
+
 		var resetButton = $("<button>");
 		resetButton.addClass("resetButton");
 
@@ -238,6 +256,8 @@ var game = {
 
 		if (game.enemies.length == 0) {
 
+			defenderChoiceAudio.pause();
+
 			game.defender.length = 0;
 
 			game.displayImages(game.defender,"#htmlDefender");
@@ -253,6 +273,11 @@ var game = {
 		}
 
 		else {
+
+			defenderChoiceAudio.pause();
+			enemyChoiceAudio.currentTime = 0
+			enemyChoiceAudio.play();
+
 			$("#htmlResetMsg").text("You beat " + $(game.defender[0]).attr("name") + "! Pick a new defender");
 
 			game.defender.length = 0;
@@ -265,8 +290,17 @@ var game = {
 	},
 
 	charClick: function(){
+
+		charChoiceAudio.currentTime = 0;
+		charChoiceAudio.play();
+
+		charChoiceAudio.addEventListener("ended", function(){
+			this.play();
+		}, false);
+
 		$(".char").on("click", function(){
-		console.log("poop");
+			charChoiceAudio.pause();
+			console.log("poop");
 		// if (game.youChar.length === 0) {
 			console.log($(this).attr("name"));
 			game.charChoice($(this).attr("name"));
@@ -278,6 +312,7 @@ var game = {
 		$(".displayEnemies").on("click", ".enemy", function(){
 		// console.log("poop");
 		// if(game.defender.length === 0){
+			enemyChoiceAudio.pause();
 			console.log($(this).attr("name"));
 			game.chooseDefender($(this).attr("name"));
 		// };
@@ -299,6 +334,8 @@ var game = {
 
 	htmlResetButton: function(){
 		$(".resetButton").on("click",function(){
+
+			defenderChoiceAudio.pause();
 			// console.log("hahaha");
 
 			game.youChar.length = 0;
@@ -312,28 +349,28 @@ var game = {
 			chars = [
 
 	{	
-		name: "swordfish",
+		name: "Ibuki",
 		hP: 0,
 		attkPwr: 0,
 		cntrAttckPwr: 1
 	},
 
 	{	
-		name: "killerwhale",
+		name: "Sagat",
 		hP: 10,
 		attkPwr: 15,
 		cntrAttckPwr: 2
 	},
 
 	{	
-		name: "octopus",
+		name: "Ryu",
 		hP: 20,
 		attkPwr: 25,
 		cntrAttckPwr: 3
 	},
 
 	{	
-		name: "shark",
+		name: "Chun-Li",
 		hP: 30,
 		attkPwr: 35,
 		cntrAttckPwr: 4
@@ -374,6 +411,9 @@ var game = {
 //Initial code upon loading:
 
 $(document).ready(function(){
+
+	
+
 	game.displayImages(chars,"#htmlChars","char");
 
 	game.charClick();
